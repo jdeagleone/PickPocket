@@ -6,7 +6,9 @@
 </head>
 <body>
 {% block body %}
-    <button formaction="{{ url_for('authenticate') }}">Get Started</button>
+    <form action="{{ url_for('authenticate') }}" method="post">
+        <input type="submit" value="Get Started"/>
+    </form>
 {% endblock %}
 </body>
 </html>
