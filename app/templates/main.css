@@ -1,0 +1,11 @@
+table {
+    border-spacing: 5px;
+}
+
+tr {
+    cursor: default;
+}
+
+.highlight {
+    background-color: yellow;
+}
