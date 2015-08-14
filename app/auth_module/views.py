@@ -2,7 +2,7 @@ import json
 import webbrowser
 from app import app
 from config import CONSUMER_KEY, HEADERS, REDIRECT_URI, AUTH_URL, OAUTH_ACCESS_URL, OAUTH_REQUEST_URL, GET_URL
-from flask import render_template, g
+from flask import render_template, g, redirect, url_for
 import requests as r
 
 
@@ -27,9 +27,15 @@ def authenticate():
 
 # Step 4 of Pocket developer documentation
 @app.route('/authorize/<code>')
-def authorize(code):
+def main_screen(code):
+    g.code = code
+    return redirect(url_for('authorize'))
+
+
+@app.route('/main')
+def authorize():
     # Step 5 of Pocket developer documentation
-    data = {'consumer_key': CONSUMER_KEY, 'code': code}
+    data = {'consumer_key': CONSUMER_KEY, 'code': g.code}
     auth_response = r.post(OAUTH_ACCESS_URL, headers=HEADERS, data=json.dumps(data))
     json_response = json.loads(auth_response.text)
     g.access_token = json_response['access_token']

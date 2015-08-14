@@ -2,60 +2,44 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
-        $(function() {
+    {% if title %}
+    <title>{{ title }} - PickPocket</title>
+    {% else %}
+    <title>PickPocket</title>
+    {% endif %}
 
-            /* Get all rows from your 'table' but not the first one
-             * that includes headers. */
-            var rows = $('tr').not(':first');
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.8/css/jquery.dataTables.css">
 
-            /* Create 'click' event handler for rows */
-            rows.on('click', function(e) {
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 
-                /* Get current row */
-                var row = $(this);
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.8/js/jquery.dataTables.js"></script>
 
-                /* Check if 'Ctrl', 'cmd' or 'Shift' keyboard key was pressed
-                 * 'Ctrl' => is represented by 'e.ctrlKey' or 'e.metaKey'
-                 * 'Shift' => is represented by 'e.shiftKey' */
-                if ((e.ctrlKey || e.metaKey) || e.shiftKey) {
-                    /* If pressed highlight the other row that was clicked */
-                    row.addClass('highlight');
-                } else {
-                    /* Otherwise just highlight one row and clean others */
-                    rows.removeClass('highlight');
-                    row.addClass('highlight');
-                }
-
-            });
-
-            /* This 'event' is used just to avoid that the table text
-             * gets selected (just for styling).
-             * For example, when pressing 'Shift' keyboard key and clicking
-             * (without this 'event') the text of the 'table' will be selected.
-             * You can remove it if you want, I just tested this in
-             * Chrome v30.0.1599.69 */
-            $(document).bind('selectstart dragstart', function(e) {
-                e.preventDefault(); return false;
-            });
-
+    <script>
+        $(document).ready( function () {
+            $('#article_table').DataTable();
         });
     </script>
-    <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 {% block content %}
     <p>You made it!</p>
-    <table border="1">
-        <tr>
-            <th>Article</th>
-        </tr>
-        {% for article in articles %}
-        <tr>
-            <td>{{ article }}</td>
-        </tr>
-        {% endfor %}
+    <table id="article_table" border="1">
+        <thead>
+            <tr>
+                <th>Article</th>
+            </tr>
+        </thead>
+        <tfoot>
+            {% for article in articles %}
+            <tr>
+                <td>{{ article }}</td>
+            </tr>
+            {% endfor %}
+        </tfoot>
     </table>
 {% endblock %}
 </body>
