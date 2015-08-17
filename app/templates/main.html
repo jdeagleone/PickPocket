@@ -8,39 +8,53 @@
     <title>PickPocket</title>
     {% endif %}
 
-    <!--<link rel="stylesheet" type="text/css" href="main.css">-->
+    <link rel="stylesheet" type="text/css" href="main.css">
     <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.8/css/jquery.dataTables.css">
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.8/css/jquery.dataTables.min.css">-->
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/r/dt/dt-1.10.8,r-1.0.7,se-1.0.0/datatables.min.css"/>
 
     <!-- jQuery -->
-    <script type="text/javascript" charset="utf8" src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
 
     <!-- DataTables -->
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.8/js/jquery.dataTables.js"></script>
+    <!--<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script>-->
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/r/dt/dt-1.10.8,r-1.0.7,se-1.0.0/datatables.min.js"></script>
+
 
     <script>
-        $(document).ready( function () {
-            $('#article_table').DataTable();
+        $(document).ready(function () {
+            $('#article_table').DataTable({
+                paging: false,
+                select: true
+            })
         });
     </script>
 </head>
 <body>
-{% block content %}
-    <p>You made it!</p>
-    <table id="article_table" border="1">
-        <thead>
-            <tr>
-                <th>Article</th>
-            </tr>
-        </thead>
-        <tfoot>
-            {% for article in articles %}
-            <tr>
-                <td>{{ article }}</td>
-            </tr>
-            {% endfor %}
-        </tfoot>
-    </table>
-{% endblock %}
+<p>You made it!</p>
+<table id="article_table" class="display" cellspacing="0" width="80%">
+    <thead>
+    <tr>
+        <th>Article</th>
+        <th>Stuff</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for article in articles %}
+    <tr>
+        <td>{{ article }}</td>
+        <td>Stuffs</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <th>Article</th>
+        <th>Stuff</th>
+    </tr>
+    </tfoot>
+</table>
 </body>
 </html>
