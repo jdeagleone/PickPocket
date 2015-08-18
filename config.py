@@ -11,4 +11,6 @@ REDIRECT_URI = 'http://127.0.0.1:5000/authorize'
 OAUTH_REQUEST_URL = 'https://getpocket.com/v3/oauth/request'
 AUTH_URL = 'https://getpocket.com/auth/authorize'
 OAUTH_ACCESS_URL = 'https://getpocket.com/v3/oauth/authorize'
+GET_URL = 'https://getpocket.com/v3/get'
 HEADERS = {'Content-Type': 'application/json; charset=UTF-8', 'X-Accept': 'application/json'}
+SESSION_TYPE = 'filesystem'
