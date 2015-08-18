@@ -47,6 +47,8 @@ def authorize():
     articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
     articles_json = json.loads(articles.text)
     articles_list = []
+    articles_datetime = []
+
     for x in articles_json['list']:
         articles_list.append(articles_json['list'][x]['resolved_title'])
     return render_template('main.html',
