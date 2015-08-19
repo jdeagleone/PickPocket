@@ -21,10 +21,8 @@ def authenticate():
     final_auth_url = AUTH_URL + '?request_token=' + json_response[
         'code'] + '&redirect_uri=' + REDIRECT_URI + '/' + json_response['code']
     # Step 3 of Pocket developer documentation
-    webbrowser.open_new_tab(final_auth_url)
-    print(response)
     if response.__str__() == '<Response [200]>':    # nosetest for successful response
-        return True
+        return redirect(final_auth_url)
 
 
 # Step 4 of Pocket developer documentation
