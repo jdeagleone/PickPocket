@@ -13,3 +13,4 @@ deploy:
   on:
     repo: garettmd/PickPocket
     branch: Production
+    python: 3.4.2
