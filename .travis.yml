@@ -1,7 +1,15 @@
 language: python
 python:
-  - "3.4"
+- '3.4'
 install:
-  - "pip install ."
-  - "pip install -r requirements.txt"
+- pip install .
+- pip install -r requirements.txt
 script: nosetests
+deploy:
+  provider: heroku
+  api_key:
+    secure: tDgFIuCKo4buCNDZVDNeVLvdKJ2sCdJhzahqg+5NPxEI7bOu/MnqBjdsb0y3ivyYMiTAi6LixzzyC4iCMJcuiQw6gdJaxoDPoF2JLt5dPwCLND/7HULJaeJHk2HjzC6Gy+oKdXve+rK1rvUEkiw0t8I//dkftTGxaOUgz1DIwcexzsYpZ+guWn7sKRoFpcmedFzAym6grZ1fr6v2GJZQolBlRbkI+1xMy3ra3f1WMydR+Ve2a1208qyJ2fH/MLOIhNbnB96/Eu8TVESzoFrTRi7VXpxYH5lKHYEjIYhdspwD7QdTlVj9VfDNoJYgdlg74bIFaEGANX/pnMY/Pju5msDqWUzJIOEtxt4R6GgPB6uHKZTKJzujbp4HhWK40fYCsaO6UluiawJCm874CHnjly2iE9TKCml0zL/+2DVm1UqBaP0CHYAQHBJuSY8Tdg82W3sbTdtV6VPYlDNtK7WPCsVgwyU1TiaW4qoWQ7ugU1bJWUFmuf9BOWpJcYR7nrqa0meXgVxqixg366lPdI5zmzJy2Ot5iTYQAzD6VBzh/7Hz4ooI/igOInoS6fhYc0+jQ6mryHKJnJZOPrX94Vxp8NJtk0qmN8W64a0LHxFt8qS7uhQqtLCZb1jDOF8KeTBxC1bGN4TJet+mxIFh19dvAtLyDEx8aFdacnXyr1wPMnk=
+  app: PickPocket
+  on:
+    repo: garettmd/PickPocket
+    branch: production
