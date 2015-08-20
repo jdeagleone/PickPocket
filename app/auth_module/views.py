@@ -22,7 +22,7 @@ def authenticate():
         'code'] + '&redirect_uri=' + REDIRECT_URI + '/' + json_response['code']
     # Step 3 of Pocket developer documentation
     if response.__str__() == '<Response [200]>':    # nosetest for successful response
-        return redirect(final_auth_url)
+        return redirect(url_for(main_screen))
 
 
 # Step 4 of Pocket developer documentation
