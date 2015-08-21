@@ -27,8 +27,12 @@
     <script>
         $(document).ready(function () {
             $('#article_table').DataTable({
+                dom: 'B',
                 paging: false,
-                select: true
+                select: true,
+                Buttons: [
+                        'view', 'archive', 'star', 'tag'
+                ]
             })
         });
     </script>
