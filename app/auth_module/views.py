@@ -1,5 +1,4 @@
 import json
-import webbrowser
 from app import app
 from config import CONSUMER_KEY, HEADERS, REDIRECT_URI, AUTH_URL, OAUTH_ACCESS_URL, OAUTH_REQUEST_URL, GET_URL
 from flask import render_template, g, redirect, url_for, session
@@ -21,10 +20,8 @@ def authenticate():
     final_auth_url = AUTH_URL + '?request_token=' + json_response[
         'code'] + '&redirect_uri=' + REDIRECT_URI + '/' + json_response['code']
     # Step 3 of Pocket developer documentation
-    webbrowser.open_new_tab(final_auth_url)
-    print(response)
     if response.__str__() == '<Response [200]>':    # nosetest for successful response
-        return True
+        return redirect(final_auth_url)
 
 
 # Step 4 of Pocket developer documentation
