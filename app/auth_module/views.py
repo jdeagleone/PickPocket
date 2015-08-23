@@ -20,7 +20,7 @@ def authenticate():
     final_auth_url = AUTH_URL + '?request_token=' + json_response[
         'code'] + '&redirect_uri=' + REDIRECT_URI + '/' + json_response['code']
     # Step 3 of Pocket developer documentation
-    if response.__str__() == '<Response [200]>':    # nosetest for successful response
+    if response.__str__() == '<Response [200]>':  # nosetest for successful response
         return redirect(final_auth_url)
 
 
@@ -32,6 +32,13 @@ def main_screen(code):
 
 
 @app.route('/main')
+def check_session():
+    if 'code' in session.keys():
+        get_latest_articles(10)
+    else:
+        authorize()
+
+
 def authorize():
     # Step 5 of Pocket developer documentation
     data = {'consumer_key': CONSUMER_KEY, 'code': session['code']}
@@ -41,12 +48,27 @@ def authorize():
     session['user'] = json_response['username']
 
     # Initial retrieval of 10 latest Pocket articles
-    retr_data = {'count': 10, 'sort': 'newest', 'detailType': 'simple', 'consumer_key': CONSUMER_KEY,
+    get_latest_articles(10)
+    # retr_data = {'count': 10, 'sort': 'newest', 'detailType': 'simple', 'consumer_key': CONSUMER_KEY,
+    #              'access_token': session['access_token']}
+    # articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
+    # articles_json = json.loads(articles.text)
+    # articles_list = []
+    # articles_datetime = []
+    #
+    # for x in articles_json['list']:
+    #     articles_list.append(articles_json['list'][x]['resolved_title'])
+    # return render_template('main.html',
+    #                        articles=articles_list
+    #                        )
+
+
+def get_latest_articles(number):
+    retr_data = {'count': number, 'sort': 'newest', 'detailType': 'simple', 'consumer_key': CONSUMER_KEY,
                  'access_token': session['access_token']}
     articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
     articles_json = json.loads(articles.text)
     articles_list = []
-    articles_datetime = []
 
     for x in articles_json['list']:
         articles_list.append(articles_json['list'][x]['resolved_title'])
