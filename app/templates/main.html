@@ -22,6 +22,11 @@
     <script type="text/javascript"
             src="https://cdn.datatables.net/r/dt/dt-1.10.8,r-1.0.7,se-1.0.0/datatables.min.js"></script>
 
+    <!-- Semantic-UI -->
+    <link rel="stylesheet" type="text/css" href="../../semantic/dist/semantic.min.css">
+    <script src="../../semantic/dist/semantic.min.js"></script>
+
+
     <script>
         $(document).ready(function () {
             $('#article_table').DataTable({
@@ -32,28 +37,30 @@
     </script>
 </head>
 <body>
-<p>You made it!</p>
-<table id="article_table" class="display" cellspacing="0">
-    <thead>
-    <tr>
-        <th>Article</th>
-        <th>Stuff</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for article in articles %}
-    <tr>
-        <td>{{ article }}</td>
-        <td>Stuffs</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-    <tr>
-        <th>Article</th>
-        <th>Stuff</th>
-    </tr>
-    </tfoot>
-</table>
+    <p>You made it!</p>
+    <table id="article_table" class="display" cellspacing="0">
+        <thead>
+        <tr>
+            <th>Article</th>
+            <th>Stuff</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+        <tr>
+            <td>{{ article }}</td>
+            <td>Stuffs</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        <tr>
+            <th>Article</th>
+            <th>Stuff</th>
+        </tr>
+        </tfoot>
+    </table>
+    <button class="ui button">Push me</button>
+
 </body>
 </html>

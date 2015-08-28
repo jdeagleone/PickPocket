@@ -28,15 +28,15 @@ def authenticate():
 @app.route('/authorize/<code>')
 def main_screen(code):
     session['code'] = code
-    return redirect(url_for('authorize'))
+    return redirect('/main')
 
 
 @app.route('/main')
 def check_session():
     if 'code' in session.keys():
-        get_latest_articles(10)
+        return get_latest_articles(10)
     else:
-        authorize()
+        return authorize()
 
 
 def authorize():
@@ -48,7 +48,7 @@ def authorize():
     session['user'] = json_response['username']
 
     # Initial retrieval of 10 latest Pocket articles
-    get_latest_articles(10)
+    return get_latest_articles(10)
     # retr_data = {'count': 10, 'sort': 'newest', 'detailType': 'simple', 'consumer_key': CONSUMER_KEY,
     #              'access_token': session['access_token']}
     # articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
