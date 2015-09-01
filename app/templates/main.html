@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     {% if title %}
     <title>{{ title }} - PickPocket</title>
@@ -9,7 +8,7 @@
     {% endif %}
 
     <!-- Default CSS-->
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <!--<link rel="stylesheet" type="text/css" href="main.css">-->
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css"
@@ -23,9 +22,12 @@
             src="https://cdn.datatables.net/r/dt/dt-1.10.8,r-1.0.7,se-1.0.0/datatables.min.js"></script>
 
     <!-- Semantic-UI -->
-    <link rel="stylesheet" type="text/css" href="../../semantic/dist/semantic.min.css">
-    <script src="../../semantic/dist/semantic.min.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">-->
+    <!--<script src="/semantic/dist/semantic.min.js"></script>-->
 
+    <!-- BassCSS-->
+    <!--<script type="text/javascript" src="../../basscss-7.0.4/scripts/css.js"></script>-->
+    <link type="text/css" href="../../basscss-7.0.4/css/basscss.css"/>
 
     <script>
         $(document).ready(function () {
@@ -37,30 +39,34 @@
     </script>
 </head>
 <body>
-    <p>You made it!</p>
-    <table id="article_table" class="display" cellspacing="0">
-        <thead>
-        <tr>
-            <th>Article</th>
-            <th>Stuff</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for article in articles %}
-        <tr>
-            <td>{{ article }}</td>
-            <td>Stuffs</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-        <tfoot>
-        <tr>
-            <th>Article</th>
-            <th>Stuff</th>
-        </tr>
-        </tfoot>
-    </table>
-    <button class="ui button">Push me</button>
-
+<p>You made it!</p>
+<table id="article_table" class="display" cellspacing="0">
+    <thead>
+    <tr>
+        <th>Article</th>
+        <th>Stuff</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for article in articles %}
+    <tr>
+        <td>{{ article }}</td>
+        <td>Stuffs</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <th>Article</th>
+        <th>Stuff</th>
+    </tr>
+    </tfoot>
+</table>
+<div class="mb1">
+    <button type="button" class="h4 btn btn-primary">Archive</button>
+    <button type="button" class="h4 btn btn-primary">Delete</button>
+    <button type="button" class="h4 btn btn-primary">Edit Tags</button>
+    <button type="button" class="h4 btn btn-primary">Favorite</button>
+</div>
 </body>
 </html>

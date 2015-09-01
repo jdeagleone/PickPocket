@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+
+    <!-- Semantic-UI -->
+    <link rel="stylesheet" type="text/css" href="../../semantic/dist/semantic.min.css">
+    <script src="../../semantic/dist/semantic.min.js"></script>
 </head>
 <body>
 {% block body %}
     <form action="{{ url_for('authenticate') }}" method="post">
-        <input type="submit" value="Get Started"/>
+        <button class="ui button">Get Started</button>
     </form>
 {% endblock %}
 </body>

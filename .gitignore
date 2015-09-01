@@ -60,8 +60,8 @@ target/
 *.idea
 
 # Flask-session
-flask_session/*
+flask_session
 
 # Semantic-UI; Leave out until deciding to keep the framework. Test only locally now
-semantic/*
-node_modules/*
+semantic
+node_modules

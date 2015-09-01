@@ -33,7 +33,7 @@ def main_screen(code):
 
 @app.route('/main')
 def check_session():
-    if 'code' in session.keys():
+    if 'access_token' in session.keys():
         return get_latest_articles(10)
     else:
         return authorize()
