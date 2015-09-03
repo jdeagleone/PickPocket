@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
+<head>
     {% if title %}
     <title>{{ title }} - PickPocket</title>
     {% else %}
@@ -8,10 +9,13 @@
     {% endif %}
 
     <!-- Default CSS-->
-    <!--<link rel="stylesheet" type="text/css" href="main.css">-->
+    <!--<link rel="stylesheet" type="text/css" href="front.css">-->
 
     <!-- BassCSS-->
-    <link type="text/css" href="../static/basscss.min.css" rel="stylesheet"/>
+    <link type="text/css" href="static/basscss.min.css" rel="stylesheet"/>
+
+    <!-- Main CSS -->
+    <link type="text/css" rel="stylesheet" href="static/front.css"/>
 
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css"
@@ -24,10 +28,6 @@
     <script type="text/javascript"
             src="https://cdn.datatables.net/r/dt/dt-1.10.8,r-1.0.7,se-1.0.0/datatables.min.js"></script>
 
-    <!-- Semantic-UI -->
-    <!--<link rel="stylesheet" type="text/css" href="/semantic/dist/semantic.min.css">-->
-    <!--<script src="/semantic/dist/semantic.min.js"></script>-->
-
     <script>
         $(document).ready(function () {
             $('#article_table').DataTable({
@@ -38,35 +38,38 @@
     </script>
 </head>
 <body>
-<div
-<p>You made it!</p>
-<table id="article_table" class="display" cellspacing="0">
-    <thead>
-    <tr>
-        <th>Article</th>
-        <th>Stuff</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for article in articles %}
-    <tr>
-        <td>{{ article }}</td>
-        <td>Stuffs</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    <tfoot>
-    <tr>
-        <th>Article</th>
-        <th>Stuff</th>
-    </tr>
-    </tfoot>
-</table>
-<div class="mb1">
-    <button type="button" class="h4 btn btn-primary">Archive</button>
-    <button type="button" class="h4 btn btn-primary">Delete</button>
-    <button type="button" class="h4 btn btn-primary">Edit Tags</button>
-    <button type="button" class="h4 btn btn-primary">Favorite</button>
+<div class="dtable-wrapper">
+    <div class="center">
+        <table id="article_table" class="display" cellspacing="0">
+            <thead>
+            <tr>
+                <th>Article</th>
+                <th>Stuff</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for article in articles %}
+            <tr>
+                <td>{{ article }}</td>
+                <td>Stuffs</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Article</th>
+                <th>Stuff</th>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="mb1">
+            <button class="h4 btn btn-primary bg-red">Archive</button>
+            <button class="h4 btn btn-primary bg-red">Delete</button>
+            <button class="h4 btn btn-primary bg-red">Edit Tags</button>
+            <button class="h4 btn btn-primary bg-red">Favorite</button>
+        </div>
+    </div>
+</div>
 </div>
 </body>
 </html>

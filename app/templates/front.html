@@ -2,17 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    {% if title %}
+    <title>{{ title }} - PickPocket</title>
+    {% else %}
+    <title>PickPocket</title>
+    {% endif %}
 
-    <!-- Semantic-UI -->
-    <link rel="stylesheet" type="text/css" href="../../semantic/dist/semantic.min.css">
-    <script src="../../semantic/dist/semantic.min.js"></script>
+    <!-- BassCSS-->
+    <link type="text/css" rel="stylesheet" href="static/basscss.min.css"/>
+
+    <!-- Main CSS -->
+    <link type="text/css" rel="stylesheet" href="static/front.css"/>
+
 </head>
 <body>
-{% block body %}
-    <form action="{{ url_for('authenticate') }}" method="post">
-        <button class="ui button">Get Started</button>
-    </form>
-{% endblock %}
+<div class="container">
+    <div class="front-wrapper">
+        <div class="center">
+            <form action="{{ url_for('authenticate') }}" method="post">
+                <button class="h4 btn btn-primary bg-red">Get Started</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
