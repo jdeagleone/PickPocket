@@ -2,13 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    {% if title %}
+    <title>{{ title }} - PickPocket</title>
+    {% else %}
+    <title>PickPocket</title>
+    {% endif %}
+
+    <!-- BassCSS-->
+    <link type="text/css" rel="stylesheet" href="static/basscss.min.css"/>
+
+    <!-- Main CSS -->
+    <link type="text/css" rel="stylesheet" href="static/front.css"/>
+
 </head>
 <body>
-{% block body %}
-    <form action="{{ url_for('authenticate') }}" method="post">
-        <input type="submit" value="Get Started"/>
-    </form>
-{% endblock %}
+<div class="container">
+    <div class="front-wrapper">
+        <div class="center">
+            <form action="{{ url_for('authenticate') }}" method="post">
+                <button class="h4 btn btn-primary bg-red">Get Started</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
