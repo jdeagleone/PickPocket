@@ -44,14 +44,14 @@
             <thead>
             <tr>
                 <th>Article</th>
-                <th>Stuff</th>
+                <th>Tags</th>
             </tr>
             </thead>
             <tbody>
             {% for article in articles %}
             <tr>
-                <td>{{ article }}</td>
-                <td>Stuffs</td>
+                <td>{{ article['article'] }}</td>
+                <td>{{ article['tag'] }}</td>
             </tr>
             {% endfor %}
             </tbody>

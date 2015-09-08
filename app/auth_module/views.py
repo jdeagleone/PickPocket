@@ -46,32 +46,41 @@ def authorize():
     json_response = json.loads(auth_response.text)
     session['access_token'] = json_response['access_token']
     session['user'] = json_response['username']
-
     # Initial retrieval of 10 latest Pocket articles
     return get_latest_articles(10)
-    # retr_data = {'count': 10, 'sort': 'newest', 'detailType': 'simple', 'consumer_key': CONSUMER_KEY,
-    #              'access_token': session['access_token']}
-    # articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
-    # articles_json = json.loads(articles.text)
-    # articles_list = []
-    # articles_datetime = []
-    #
-    # for x in articles_json['list']:
-    #     articles_list.append(articles_json['list'][x]['resolved_title'])
-    # return render_template('main.html',
-    #                        articles=articles_list
-    #                        )
 
 
 def get_latest_articles(number):
-    retr_data = {'count': number, 'sort': 'newest', 'detailType': 'simple', 'consumer_key': CONSUMER_KEY,
+    retr_data = {'count': number, 'sort': 'newest', 'detailType': 'complete', 'consumer_key': CONSUMER_KEY,
                  'access_token': session['access_token']}
     articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
     articles_json = json.loads(articles.text)
-    articles_list = []
+    articles_final = []
+    tag = ''
 
     for x in articles_json['list']:
-        articles_list.append(articles_json['list'][x]['resolved_title'])
+        article_name = articles_json['list'][x]['resolved_title']
+        if 'tags' in articles_json['list'][x]:
+            for y in articles_json['list'][x]['tags']:
+                tag = tag + y
+        else:
+            tag = ''
+        articles_final.append(dict(article=article_name, tag=tag))
+
     return render_template('main.html',
-                           articles=articles_list
+                           articles=articles_final
                            )
+
+
+def get_article_tags(articles):
+    # This will take an article name and return its corresponding tag
+    # This will primarily be used to push the tag to the jinja template
+    # on main.html, in the middle of it looping through the articles
+    # list variable to fill out the tags column for that article
+    tag_list = []
+    for key, item in articles.items():
+        if key == 'tags':
+            tag_list.append(item.keys())
+        elif type(item) is dict or type(item) is list:
+            get_article_tags(item)
+    return tag_list
