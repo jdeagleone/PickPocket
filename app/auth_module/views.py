@@ -85,7 +85,7 @@ def get_article_tags(articles):
         tag_group = ''
         if 'tags' in articles[x]:
             for y in articles[x]['tags']:
-                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], ', '])
+                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], '  '])
                 # TODO: Need to figure out why the hell extra spaces or even commas don't show up
                 # It just keeps showing one space for some reason
             tag.append(tag_group)
