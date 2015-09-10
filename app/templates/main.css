@@ -1,3 +1,6 @@
-div.container {
-    width: 80%;
+.wrapper {
+    margin: 10px auto;
+    max-width: 300px;
+    padding: 30px;
+    border: 4px double green;
 }
