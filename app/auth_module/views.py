@@ -54,33 +54,66 @@ def get_latest_articles(number):
     retr_data = {'count': number, 'sort': 'newest', 'detailType': 'complete', 'consumer_key': CONSUMER_KEY,
                  'access_token': session['access_token']}
     articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
-    articles_json = json.loads(articles.text)
-    articles_final = []
-    tag = ''
+    articles_json = json.loads(articles.text)['list']
+    final_list = []
 
-    for x in articles_json['list']:
-        article_name = articles_json['list'][x]['resolved_title']
-        if 'tags' in articles_json['list'][x]:
-            for y in articles_json['list'][x]['tags']:
-                tag = tag + y
-        else:
-            tag = ''
-        articles_final.append(dict(article=article_name, tag=tag))
+    # Gather lists of article components
+    title_list = get_article_res_title(articles_json)
+    fav_list = get_article_favorites(articles_json)
+    tag_list = get_article_tags(articles_json)
+    image_list = get_article_image(articles_json)
+
+    # Compile component lists into a list of dictionaries
+    for i, x in enumerate(title_list, start=0):
+        final_list.append(dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i]))
 
     return render_template('main.html',
-                           articles=articles_final
+                           articles=final_list
                            )
 
 
-def get_article_tags(articles):
-    # This will take an article name and return its corresponding tag
-    # This will primarily be used to push the tag to the jinja template
-    # on main.html, in the middle of it looping through the articles
-    # list variable to fill out the tags column for that article
-    tag_list = []
-    for key, item in articles.items():
-        if key == 'tags':
-            tag_list.append(item.keys())
-        elif type(item) is dict or type(item) is list:
-            get_article_tags(item)
-    return tag_list
+def get_article_res_title(articles) -> list:
+    title = []
+    for x in articles:
+        title.append(articles[x]['resolved_title'])
+    return title
+
+
+def get_article_tags(articles) -> list:
+    tag = []
+    for x in articles:
+        tag_group = ''
+        if 'tags' in articles[x]:
+            for y in articles[x]['tags']:
+                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], ' '])
+                # TODO: Need to figure out why the hell extra spaces or even commas don't show up
+                # It just keeps showing one space for some reason
+            tag.append(tag_group)
+            print(tag)
+        else:
+            tag.append('')
+    return tag
+
+
+def get_article_image(articles) -> list:
+    image = []
+    for x in articles:
+        if articles[x]['has_image'] == 1:
+            image.append(articles[x]['image']['src'])
+        else:
+            image.append('')
+    return image
+
+
+def get_article_favorites(articles) -> list:
+    fav = []
+    for x in articles:
+        if articles[x]['favorite'] == 1:
+            fav.append(True)
+        else:
+            fav.append(False)
+    return fav
+
+
+def get_article_res_url(articles) -> list:
+    pass

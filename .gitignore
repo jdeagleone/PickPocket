@@ -65,3 +65,6 @@ flask_session
 # Semantic-UI; Leave out until deciding to keep the framework. Test only locally now
 semantic
 node_modules
+
+# Unminified basscss file
+basscss-7.0.4/css/basscss.css
