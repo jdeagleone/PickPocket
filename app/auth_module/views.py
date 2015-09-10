@@ -72,20 +72,20 @@ def get_latest_articles(number):
                            )
 
 
-def get_article_res_title(articles) -> list:
+def get_article_res_title(articles):
     title = []
     for x in articles:
         title.append(articles[x]['resolved_title'])
     return title
 
 
-def get_article_tags(articles) -> list:
+def get_article_tags(articles):
     tag = []
     for x in articles:
         tag_group = ''
         if 'tags' in articles[x]:
             for y in articles[x]['tags']:
-                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], ' '])
+                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], ', '])
                 # TODO: Need to figure out why the hell extra spaces or even commas don't show up
                 # It just keeps showing one space for some reason
             tag.append(tag_group)
@@ -95,7 +95,7 @@ def get_article_tags(articles) -> list:
     return tag
 
 
-def get_article_image(articles) -> list:
+def get_article_image(articles):
     image = []
     for x in articles:
         if articles[x]['has_image'] == 1:
@@ -105,7 +105,7 @@ def get_article_image(articles) -> list:
     return image
 
 
-def get_article_favorites(articles) -> list:
+def get_article_favorites(articles):
     fav = []
     for x in articles:
         if articles[x]['favorite'] == 1:
@@ -115,5 +115,5 @@ def get_article_favorites(articles) -> list:
     return fav
 
 
-def get_article_res_url(articles) -> list:
+def get_article_res_url(articles):
     pass
