@@ -31,7 +31,7 @@
     <script>
         $(document).ready(function () {
             $('#article_table').DataTable({
-                paging: false,
+                paging: true,
                 select: true
             })
         });
@@ -39,12 +39,15 @@
 </head>
 <body>
 <div class="dtable-wrapper">
+    <!-- TODO: Make one of these divs fixed in size, so that buttons below will always be in same spot,-->
+    <!-- even if list is less than the max length of a datable page-->
     <div class="center">
         <table id="article_table" class="display" cellspacing="0">
             <thead>
             <tr>
                 <th>Article</th>
                 <th>Tags</th>
+                <th>Favorite</th>
             </tr>
             </thead>
             <tbody>
@@ -52,13 +55,15 @@
             <tr>
                 <td>{{ article['article'] }}</td>
                 <td>{{ article['tag'] }}</td>
+                <td>{{ article['fav'] }}</td>
             </tr>
             {% endfor %}
             </tbody>
             <tfoot>
             <tr>
                 <th>Article</th>
-                <th>Stuff</th>
+                <th>Tags</th>
+                <th>Favorite</th>
             </tr>
             </tfoot>
         </table>
@@ -70,6 +75,6 @@
         </div>
     </div>
 </div>
-</div>
+<!--TODO: Create a text area that outputs JSON output. This would make it easier to troubleshoot API calls-->
 </body>
 </html>

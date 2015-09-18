@@ -8,7 +8,11 @@ import requests as r
 @app.route('/')
 @app.route('/front')
 def front():
-    return render_template('front.html')
+    if 'access_token' in session.keys():
+        # TODO: Figure out a way to not duplicate this check
+        return redirect('/main')
+    else:
+        return render_template('front.html')
 
 
 @app.route('/authenticate', methods=['POST'])
@@ -34,9 +38,14 @@ def main_screen(code):
 @app.route('/main')
 def check_session():
     if 'access_token' in session.keys():
-        return get_latest_articles(10)
+        return get_latest_articles(100)
     else:
         return authorize()
+
+
+def authenticate_check():
+    # Intend to use this as a decorator for checking to see if user has authenticated yet with Pocket
+    pass
 
 
 def authorize():
@@ -47,7 +56,7 @@ def authorize():
     session['access_token'] = json_response['access_token']
     session['user'] = json_response['username']
     # Initial retrieval of 10 latest Pocket articles
-    return get_latest_articles(10)
+    return get_latest_articles(100)
 
 
 def get_latest_articles(number):
@@ -75,7 +84,13 @@ def get_latest_articles(number):
 def get_article_res_title(articles):
     title = []
     for x in articles:
-        title.append(articles[x]['resolved_title'])
+        if articles[x]['resolved_title'] != '':
+            title.append(articles[x]['resolved_title'])
+        elif articles[x]['given_title'] != '':
+            title.append(articles[x]['given_title'])
+        else:
+            title.append(articles[x]['resolved_url'])
+
     return title
 
 
@@ -85,11 +100,11 @@ def get_article_tags(articles):
         tag_group = ''
         if 'tags' in articles[x]:
             for y in articles[x]['tags']:
-                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], '  '])
+                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], ' '])
                 # TODO: Need to figure out why the hell extra spaces or even commas don't show up
                 # It just keeps showing one space for some reason
             tag.append(tag_group)
-            print(tag)
+            # print(tag)
         else:
             tag.append('')
     return tag
@@ -108,12 +123,17 @@ def get_article_image(articles):
 def get_article_favorites(articles):
     fav = []
     for x in articles:
-        if articles[x]['favorite'] == 1:
-            fav.append(True)
+        if articles[x]['favorite'] == '1':
+            fav.append(u'\u2605')
+            # fav.append('yes!')
         else:
-            fav.append(False)
+            fav.append('')
     return fav
 
 
 def get_article_res_url(articles):
+    pass
+
+
+def get_article_time_added(articles):
     pass
