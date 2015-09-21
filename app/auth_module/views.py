@@ -1,8 +1,9 @@
 import json
 from app import app
 from config import CONSUMER_KEY, HEADERS, REDIRECT_URI, AUTH_URL, OAUTH_ACCESS_URL, OAUTH_REQUEST_URL, GET_URL
-from flask import render_template, g, redirect, url_for, session
+from flask import render_template, g, redirect, session, Markup
 import requests as r
+from datetime import datetime
 
 
 @app.route('/')
@@ -113,10 +114,13 @@ def get_article_tags(articles):
 def get_article_image(articles):
     image = []
     for x in articles:
-        if articles[x]['has_image'] == 1:
-            image.append(articles[x]['image']['src'])
+        if articles[x]['has_image'] == "1":
+            src = articles[x]['image']['src']
+            img = Markup(''.join(['<img src="', src, '" height=30>']))
+            image.append(img)
         else:
             image.append('')
+    print(image)
     return image
 
 
@@ -136,4 +140,8 @@ def get_article_res_url(articles):
 
 
 def get_article_time_added(articles):
-    pass
+    time = []
+    for x in articles:
+        format_time = datetime.utcfromtimestamp(articles[x]['time_added'])
+        time.append(format_time.strftime('%Y-%m-%d %H:%M:%S'))
+    return time
