@@ -30,11 +30,23 @@
 
     <script>
         $(document).ready(function () {
-            $('#article_table').DataTable({
-                paging: true,
-                select: true
-            })
+            var table = $('#article_table').DataTable({
+                paging: true
+//                select: true
+            });
+
+            $('#article_table tbody').on('click', 'tr', function () {
+                $(this).toggleClass('selected');
+            });
+
+            $('#mb1 button').click(function () {
+                alert(table.rows('.selected').data().length);
+            });
         });
+
+        var offset = new Date().getTimezoneOffset()
+
+
     </script>
 </head>
 <body>
@@ -49,6 +61,7 @@
                 <th>Tags</th>
                 <th>Favorite</th>
                 <th>Image</th>
+                <th>Time Added</th>
             </tr>
             </thead>
             <tbody>
@@ -58,6 +71,7 @@
                 <td>{{ article['tag'] }}</td>
                 <td>{{ article['fav'] }}</td>
                 <td>{{ article['image'] }}</td>
+                <td>{{ article['time'] }}</td>
             </tr>
             {% endfor %}
             </tbody>
@@ -67,10 +81,11 @@
                 <th>Tags</th>
                 <th>Favorite</th>
                 <th>Image</th>
+                <th>Time Added</th>
             </tr>
             </tfoot>
         </table>
-        <div class="mb1">
+        <div class="mb1" id="mb1">
             <button class="h4 btn btn-primary bg-red">Archive</button>
             <button class="h4 btn btn-primary bg-red">Delete</button>
             <button class="h4 btn btn-primary bg-red">Edit Tags</button>

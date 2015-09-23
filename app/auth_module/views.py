@@ -72,10 +72,12 @@ def get_latest_articles(number):
     fav_list = get_article_favorites(articles_json)
     tag_list = get_article_tags(articles_json)
     image_list = get_article_image(articles_json)
+    time_list = get_article_time_added(articles_json)
 
     # Compile component lists into a list of dictionaries
     for i, x in enumerate(title_list, start=0):
-        final_list.append(dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i]))
+        final_list.append(
+            dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i], time=time_list[i]))
 
     return render_template('main.html',
                            articles=final_list
@@ -91,7 +93,6 @@ def get_article_res_title(articles):
             title.append(articles[x]['given_title'])
         else:
             title.append(articles[x]['resolved_url'])
-
     return title
 
 
@@ -105,7 +106,6 @@ def get_article_tags(articles):
                 # TODO: Need to figure out why the hell extra spaces or even commas don't show up
                 # It just keeps showing one space for some reason
             tag.append(tag_group)
-            # print(tag)
         else:
             tag.append('')
     return tag
@@ -120,7 +120,6 @@ def get_article_image(articles):
             image.append(img)
         else:
             image.append('')
-    print(image)
     return image
 
 
@@ -142,6 +141,6 @@ def get_article_res_url(articles):
 def get_article_time_added(articles):
     time = []
     for x in articles:
-        format_time = datetime.utcfromtimestamp(articles[x]['time_added'])
+        format_time = datetime.utcfromtimestamp(int(articles[x]['time_added']))
         time.append(format_time.strftime('%Y-%m-%d %H:%M:%S'))
     return time
