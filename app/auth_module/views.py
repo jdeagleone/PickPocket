@@ -3,7 +3,7 @@ from app import app
 from config import CONSUMER_KEY, HEADERS, REDIRECT_URI, AUTH_URL, OAUTH_ACCESS_URL, OAUTH_REQUEST_URL, GET_URL
 from flask import render_template, g, redirect, session, Markup
 import requests as r
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @app.route('/')
@@ -16,8 +16,8 @@ def front():
         return render_template('front.html')
 
 
-@app.route('/authenticate', methods=['POST'])
-def authenticate():
+@app.route('/authenticate/<offset>', methods=['POST', 'GET'])
+def authenticate(offset):
     # Step 2 of Pocket developer documentation
     data = {'consumer_key': CONSUMER_KEY, 'redirect_uri': REDIRECT_URI}
     response = r.post(OAUTH_REQUEST_URL, headers=HEADERS, data=json.dumps(data))
@@ -141,6 +141,7 @@ def get_article_res_url(articles):
 def get_article_time_added(articles):
     time = []
     for x in articles:
-        format_time = datetime.utcfromtimestamp(int(articles[x]['time_added']))
+        timediff = timedelta(minutes=int(session['offset']))
+        format_time = datetime.utcfromtimestamp(int(articles[x]['time_added'])) - timediff
         time.append(format_time.strftime('%Y-%m-%d %H:%M:%S'))
     return time
