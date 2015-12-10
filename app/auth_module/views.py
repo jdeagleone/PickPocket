@@ -1,18 +1,36 @@
 import json
 from app import app
 from config import CONSUMER_KEY, HEADERS, REDIRECT_URI, AUTH_URL, OAUTH_ACCESS_URL, OAUTH_REQUEST_URL, GET_URL
-from flask import render_template, g, redirect, url_for, session
+from flask import render_template, g, redirect, session, Markup, request
 import requests as r
+from datetime import datetime, timedelta
+from functools import wraps
+
+
+def authenticate_check(f):
+    @wraps(f)
+    def decorator(f):
+        if 'access_token' in session.keys():
+            return get_latest_articles(100)
+        else:
+            return authorize()
+
+    return decorator
 
 
 @app.route('/')
 @app.route('/front')
 def front():
-    return render_template('front.html')
+    if 'access_token' in session.keys():
+        # TODO: Figure out a way to not duplicate this check
+        return redirect('/main')
+    else:
+        return render_template('front.html')
 
 
-@app.route('/authenticate', methods=['POST'])
-def authenticate():
+@app.route('/authenticate/<offset>', methods=['POST', 'GET'])
+def authenticate(offset):
+    session['offset'] = offset
     # Step 2 of Pocket developer documentation
     data = {'consumer_key': CONSUMER_KEY, 'redirect_uri': REDIRECT_URI}
     response = r.post(OAUTH_REQUEST_URL, headers=HEADERS, data=json.dumps(data))
@@ -32,11 +50,19 @@ def main_screen(code):
 
 
 @app.route('/main')
+# @authenticate_check
 def check_session():
     if 'access_token' in session.keys():
         return get_latest_articles(10)
     else:
         return authorize()
+
+
+@app.route('/main/archive', methods=['POST'])
+def archive():
+    response = request.data
+    print(response)
+    return response
 
 
 def authorize():
@@ -47,7 +73,7 @@ def authorize():
     session['access_token'] = json_response['access_token']
     session['user'] = json_response['username']
     # Initial retrieval of 10 latest Pocket articles
-    return get_latest_articles(10)
+    return get_latest_articles(100)
 
 
 def get_latest_articles(number):
@@ -62,24 +88,29 @@ def get_latest_articles(number):
     fav_list = get_article_favorites(articles_json)
     tag_list = get_article_tags(articles_json)
     image_list = get_article_image(articles_json)
+    time_list = get_article_time_added(articles_json)
 
     # Compile component lists into a list of dictionaries
     for i, x in enumerate(title_list, start=0):
-        final_list.append(dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i]))
+        final_list.append(
+            dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i], time=time_list[i]))
 
-    return render_template('main.html',
-                           articles=final_list
-                           )
+    return render_template('main.html', articles=final_list)
 
 
-def get_article_res_title(articles) -> list:
+def get_article_res_title(articles):
     title = []
     for x in articles:
-        title.append(articles[x]['resolved_title'])
+        if articles[x]['resolved_title'] != '':
+            title.append(articles[x]['resolved_title'])
+        elif articles[x]['given_title'] != '':
+            title.append(articles[x]['given_title'])
+        else:
+            title.append(articles[x]['resolved_url'])
     return title
 
 
-def get_article_tags(articles) -> list:
+def get_article_tags(articles):
     tag = []
     for x in articles:
         tag_group = ''
@@ -89,31 +120,42 @@ def get_article_tags(articles) -> list:
                 # TODO: Need to figure out why the hell extra spaces or even commas don't show up
                 # It just keeps showing one space for some reason
             tag.append(tag_group)
-            print(tag)
         else:
             tag.append('')
     return tag
 
 
-def get_article_image(articles) -> list:
+def get_article_image(articles):
     image = []
     for x in articles:
-        if articles[x]['has_image'] == 1:
-            image.append(articles[x]['image']['src'])
+        if articles[x]['has_image'] == "1":
+            src = articles[x]['image']['src']
+            img = Markup(''.join(['<img src="', src, '" height=30>']))
+            image.append(img)
         else:
             image.append('')
     return image
 
 
-def get_article_favorites(articles) -> list:
+def get_article_favorites(articles):
     fav = []
     for x in articles:
-        if articles[x]['favorite'] == 1:
-            fav.append(True)
+        if articles[x]['favorite'] == '1':
+            fav.append(u'\u2605')
+            # fav.append('yes!')
         else:
-            fav.append(False)
+            fav.append('')
     return fav
 
 
-def get_article_res_url(articles) -> list:
+def get_article_res_url(articles):
     pass
+
+
+def get_article_time_added(articles):
+    time = []
+    for x in articles:
+        timediff = timedelta(minutes=int(session['offset']))
+        format_time = datetime.utcfromtimestamp(int(articles[x]['time_added'])) - timediff
+        time.append(format_time.strftime('%Y-%m-%d %H:%M:%S'))
+    return time

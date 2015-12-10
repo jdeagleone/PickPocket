@@ -14,14 +14,23 @@
     <!-- Main CSS -->
     <link type="text/css" rel="stylesheet" href="static/front.css"/>
 
+    <script>
+    //TODO: Does this var declaration really need to be here?-->
+        var offset = new Date().getTimezoneOffset()
+    </script>
+
 </head>
 <body>
 <div class="container">
     <div class="front-wrapper">
         <div class="center">
-            <form action="{{ url_for('authenticate') }}" method="post">
-                <button class="h4 btn btn-primary bg-red">Get Started</button>
-            </form>
+            <script>
+                function login() {
+                    var offset = new Date().getTimezoneOffset()
+                    window.location.assign("/authenticate/" + offset)
+                }
+            </script>
+            <button class="h4 btn btn-primary bg-red" onclick="login()">Get Started</button>
         </div>
     </div>
 </div>
