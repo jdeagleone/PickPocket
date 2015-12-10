@@ -1,9 +1,21 @@
 import json
 from app import app
 from config import CONSUMER_KEY, HEADERS, REDIRECT_URI, AUTH_URL, OAUTH_ACCESS_URL, OAUTH_REQUEST_URL, GET_URL
-from flask import render_template, g, redirect, session, Markup
+from flask import render_template, g, redirect, session, Markup, request
 import requests as r
 from datetime import datetime, timedelta
+from functools import wraps
+
+
+def authenticate_check(f):
+    @wraps(f)
+    def decorator(f):
+        if 'access_token' in session.keys():
+            return get_latest_articles(100)
+        else:
+            return authorize()
+
+    return decorator
 
 
 @app.route('/')
@@ -18,6 +30,7 @@ def front():
 
 @app.route('/authenticate/<offset>', methods=['POST', 'GET'])
 def authenticate(offset):
+    session['offset'] = offset
     # Step 2 of Pocket developer documentation
     data = {'consumer_key': CONSUMER_KEY, 'redirect_uri': REDIRECT_URI}
     response = r.post(OAUTH_REQUEST_URL, headers=HEADERS, data=json.dumps(data))
@@ -37,16 +50,19 @@ def main_screen(code):
 
 
 @app.route('/main')
+# @authenticate_check
 def check_session():
     if 'access_token' in session.keys():
-        return get_latest_articles(100)
+        return get_latest_articles(10)
     else:
         return authorize()
 
 
-def authenticate_check():
-    # Intend to use this as a decorator for checking to see if user has authenticated yet with Pocket
-    pass
+@app.route('/main/archive', methods=['POST'])
+def archive():
+    response = request.data
+    print(response)
+    return response
 
 
 def authorize():
@@ -79,9 +95,7 @@ def get_latest_articles(number):
         final_list.append(
             dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i], time=time_list[i]))
 
-    return render_template('main.html',
-                           articles=final_list
-                           )
+    return render_template('main.html', articles=final_list)
 
 
 def get_article_res_title(articles):

@@ -35,22 +35,47 @@
 //                select: true
             });
 
-            $('#article_table tbody').on('click', 'tr', function () {
+            $("#article_table tbody").on('click', 'tr', function () {
                 $(this).toggleClass('selected');
             });
 
-            $('#mb1 button').click(function () {
-                alert(table.rows('.selected').data().length);
-            });
+//            $('#mb1 button').click(function () {
+//                var payload = table.rows('.selected').data();
+//                archive(payload);
+
+            function batchedit(operation) {
+                var payload = table.rows('.selected').data();
+                $.post('/main' + operation, payload, alert("It worked!"))
+            }
         });
 
+
+        //        $('#mb1 button').click(function () {
+        //                var payload = table.rows('.selected').data();
+        //                archive(payload);
+        //            });
+        //
+        //        function archive(load) {
+        //            $.ajax({
+        //                type: 'POST',
+        //                url: '/main',
+        //                data: load,
+        //                success: function(response) {
+        //                    console.log(response);
+        //                },
+        //                error: function(response){
+        //                    console.log(response);
+        //                }
+        //            }
+        //            )
+        //        }
 
     </script>
 </head>
 <body>
 <div class="dtable-wrapper">
     <!-- TODO: Make one of these divs fixed in size, so that buttons below will always be in same spot,-->
-    <!-- even if list is less than the max length of a datable page-->
+    <!-- even if list is less than the max length of a datatable page-->
     <div class="center">
         <table id="article_table" class="display" cellspacing="0">
             <thead>
@@ -84,7 +109,7 @@
             </tfoot>
         </table>
         <div class="mb1" id="mb1">
-            <button class="h4 btn btn-primary bg-red">Archive</button>
+            <button class="h4 btn btn-primary bg-red" onclick="batchedit(archive)">Archive</button>
             <button class="h4 btn btn-primary bg-red">Delete</button>
             <button class="h4 btn btn-primary bg-red">Edit Tags</button>
             <button class="h4 btn btn-primary bg-red">Favorite</button>
