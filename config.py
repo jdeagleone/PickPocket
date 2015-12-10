@@ -7,7 +7,8 @@ DEBUG = True
 THREADS_PER_PAGE = 2
 CSRF_ENABLED = True
 CSRF_SESSION_KEY = "secret"
-SECRET_KEY = "secret"
+with open('.secret') as f:
+    SECRET_KEY = f.read().strip()
 CONSUMER_KEY = '41815-f92e2de9fd4887e04058494b'
 if os.environ.get('PORT') is None:
     REDIRECT_URI = 'http:/127.0.0.1:5000/authorize'

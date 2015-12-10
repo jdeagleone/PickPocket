@@ -71,3 +71,6 @@ basscss-7.0.4/css/basscss.css
 
 # Random
 json.txt
+
+# Secret key file
+.secret
