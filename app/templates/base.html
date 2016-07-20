@@ -2,7 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    {% if title %}
+        <title>{{ title }} - PickPocket</title>
+    {% else %}
+        <title>PickPocket</title>
+    {% endif %}
+
+    <!-- BassCSS -->
+    <link type="text/css" href="static/basscss.min.css" rel="stylesheet"/>
+
+    <!-- Main CSS -->
+    <link type="text/css" rel="stylesheet" href="static/base.css"/>
 </head>
 <body>
 

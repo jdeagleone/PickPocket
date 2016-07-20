@@ -53,7 +53,7 @@ def main_screen(code):
 # @authenticate_check
 def check_session():
     if 'access_token' in session.keys():
-        return get_latest_articles(10)
+        return get_latest_articles(100)
     else:
         return authorize()
 
@@ -61,7 +61,6 @@ def check_session():
 @app.route('/main/archive', methods=['POST'])
 def archive():
     response = request.data
-    print(response)
     return response
 
 
@@ -69,6 +68,10 @@ def authorize():
     # Step 5 of Pocket developer documentation
     data = {'consumer_key': CONSUMER_KEY, 'code': session['code']}
     auth_response = r.post(OAUTH_ACCESS_URL, headers=HEADERS, data=json.dumps(data))
+    print(auth_response)
+    print(auth_response.__str__())
+    if auth_response.__str__() != '<Response [200]>':
+        return render_template('error.html', error=auth_response.text, details=auth_response.headers)
     json_response = json.loads(auth_response.text)
     session['access_token'] = json_response['access_token']
     session['user'] = json_response['username']
@@ -101,12 +104,14 @@ def get_latest_articles(number):
 def get_article_res_title(articles):
     title = []
     for x in articles:
-        if articles[x]['resolved_title'] != '':
+        if 'resolved_title' in articles[x] and articles[x]['resolved_title'] != '':
             title.append(articles[x]['resolved_title'])
-        elif articles[x]['given_title'] != '':
+        elif 'given_title' in articles[x] and articles[x]['given_title'] != '':
             title.append(articles[x]['given_title'])
-        else:
+        elif 'resolved_url' in articles[x] and 'resolved_url' in articles[x]:
             title.append(articles[x]['resolved_url'])
+        else:
+            title.append('')
     return title
 
 
@@ -128,9 +133,9 @@ def get_article_tags(articles):
 def get_article_image(articles):
     image = []
     for x in articles:
-        if articles[x]['has_image'] == "1":
+        if 'image' in articles[x]:
             src = articles[x]['image']['src']
-            img = Markup(''.join(['<img src="', src, '" height=30>']))
+            img = Markup(''.join(['<img src="', src, '" height=40>']))
             image.append(img)
         else:
             image.append('')

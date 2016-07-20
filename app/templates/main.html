@@ -1,121 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<meta charset="UTF-8">
-<head>
-    {% if title %}
-    <title>{{ title }} - PickPocket</title>
-    {% else %}
-    <title>PickPocket</title>
-    {% endif %}
+{% extends "base.html" %}
 
-    <!-- Default CSS-->
-    <!--<link rel="stylesheet" type="text/css" href="front.css">-->
+{% block head %}
+    {{ super() }}
+    <script type="application/javascript" charset="utf-8" src="/app/static/app.js"></script>
+    <script type="application/javascript" charset="utf-8" src="/app/static/jquery.min.js"></script>
+{% endblock %}
 
-    <!-- BassCSS-->
-    <link type="text/css" href="static/basscss.min.css" rel="stylesheet"/>
-
-    <!-- Main CSS -->
-    <link type="text/css" rel="stylesheet" href="static/front.css"/>
-
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css"
-          href="https://cdn.datatables.net/r/dt/dt-1.10.8,r-1.0.7,se-1.0.0/datatables.min.css"/>
-
-    <!-- jQuery -->
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-
-    <!-- DataTables -->
-    <script type="text/javascript"
-            src="https://cdn.datatables.net/r/dt/dt-1.10.8,r-1.0.7,se-1.0.0/datatables.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-            var table = $('#article_table').DataTable({
-                paging: true
-//                select: true
-            });
-
-            $("#article_table tbody").on('click', 'tr', function () {
-                $(this).toggleClass('selected');
-            });
-
-//            $('#mb1 button').click(function () {
-//                var payload = table.rows('.selected').data();
-//                archive(payload);
-
-            function batchedit(operation) {
-                var payload = table.rows('.selected').data();
-                $.post('/main' + operation, payload, alert("It worked!"))
-            }
-        });
-
-
-        //        $('#mb1 button').click(function () {
-        //                var payload = table.rows('.selected').data();
-        //                archive(payload);
-        //            });
-        //
-        //        function archive(load) {
-        //            $.ajax({
-        //                type: 'POST',
-        //                url: '/main',
-        //                data: load,
-        //                success: function(response) {
-        //                    console.log(response);
-        //                },
-        //                error: function(response){
-        //                    console.log(response);
-        //                }
-        //            }
-        //            )
-        //        }
-
-    </script>
-</head>
-<body>
-<div class="dtable-wrapper">
-    <!-- TODO: Make one of these divs fixed in size, so that buttons below will always be in same spot,-->
-    <!-- even if list is less than the max length of a datatable page-->
-    <div class="center">
-        <table id="article_table" class="display" cellspacing="0">
-            <thead>
-            <tr>
-                <th>Article</th>
-                <th>Tags</th>
-                <th>Favorite</th>
-                <th>Image</th>
-                <th>Time Added</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for article in articles %}
-            <tr>
-                <td>{{ article['article'] }}</td>
-                <td>{{ article['tag'] }}</td>
-                <td>{{ article['fav'] }}</td>
-                <td>{{ article['image'] }}</td>
-                <td>{{ article['time'] }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-            <tr>
-                <th>Article</th>
-                <th>Tags</th>
-                <th>Favorite</th>
-                <th>Image</th>
-                <th>Time Added</th>
-            </tr>
-            </tfoot>
-        </table>
-        <div class="mb1" id="mb1">
-            <button class="h4 btn btn-primary bg-red" onclick="batchedit(archive)">Archive</button>
-            <button class="h4 btn btn-primary bg-red">Delete</button>
-            <button class="h4 btn btn-primary bg-red">Edit Tags</button>
-            <button class="h4 btn btn-primary bg-red">Favorite</button>
-        </div>
+{% block body %}
+<div class="list-container">
+    <div class="article-list">
+        {% for x in articles %}
+            <ul>
+                <li class="list-item">{{ x['article'] }}</li>
+                <li class="list-item">{{ x['tag'] }}</li>
+                <li class="list-item">{{ x['time'] }}</li>
+            </ul>
+        {% endfor %}
     </div>
 </div>
-<!--TODO: Create a text area that outputs JSON output. This would make it easier to troubleshoot API calls-->
-</body>
-</html>
+{% endblock %}

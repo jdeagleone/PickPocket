@@ -1,5 +1,6 @@
-from app import app
-from config import port
+#!/usr/bin/env python3
+
+from app import manager
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=port)
+    manager.run()
