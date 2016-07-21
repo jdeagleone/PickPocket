@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    {% if title %}
-        <title>{{ title }} - PickPocket</title>
-    {% else %}
-        <title>PickPocket</title>
-    {% endif %}
+    {% block head %}
+        <meta charset="UTF-8">
+        {% if title %}
+            <title>{{ title }} - PickPocket</title>
+        {% else %}
+            <title>PickPocket</title>
+        {% endif %}
 
-    <!-- BassCSS -->
-    <link type="text/css" href="static/basscss.min.css" rel="stylesheet"/>
+        <!-- BassCSS -->
+        {#        <link type="text/css" href="/app/static/basscss.min.css" rel="stylesheet"/>#}
 
-    <!-- Main CSS -->
-    <link type="text/css" rel="stylesheet" href="static/base.css"/>
+        <!-- Main CSS -->
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='base.css') }}"/>
+    {% endblock %}
 </head>
 <body>
-
+{% block body %}
+{% endblock %}
 </body>
 </html>

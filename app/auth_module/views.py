@@ -68,8 +68,6 @@ def authorize():
     # Step 5 of Pocket developer documentation
     data = {'consumer_key': CONSUMER_KEY, 'code': session['code']}
     auth_response = r.post(OAUTH_ACCESS_URL, headers=HEADERS, data=json.dumps(data))
-    print(auth_response)
-    print(auth_response.__str__())
     if auth_response.__str__() != '<Response [200]>':
         return render_template('error.html', error=auth_response.text, details=auth_response.headers)
     json_response = json.loads(auth_response.text)
@@ -97,7 +95,6 @@ def get_latest_articles(number):
     for i, x in enumerate(title_list, start=0):
         final_list.append(
             dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i], time=time_list[i]))
-
     return render_template('main.html', articles=final_list)
 
 

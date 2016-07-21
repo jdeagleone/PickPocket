@@ -2,20 +2,45 @@
 
 {% block head %}
     {{ super() }}
-    <script type="application/javascript" charset="utf-8" src="/app/static/app.js"></script>
-    <script type="application/javascript" charset="utf-8" src="/app/static/jquery.min.js"></script>
+    <script type="application/javascript" charset="utf8" src="/app/static/jquery/dist/jquery.min.js"></script>
+    <script type="application/javascript" charset="utf8" src="/app/static/app.js"></script>
 {% endblock %}
 
 {% block body %}
-<div class="list-container">
-    <div class="article-list">
-        {% for x in articles %}
-            <ul>
-                <li class="list-item">{{ x['article'] }}</li>
-                <li class="list-item">{{ x['tag'] }}</li>
-                <li class="list-item">{{ x['time'] }}</li>
-            </ul>
-        {% endfor %}
+    {#    <div class="list-container">#}
+    {#        <div>#}
+    {#            <ul class="article-list">#}
+    {#                <li class="list-item">Article</li>#}
+    {#                <li class="list-item">Tags</li>#}
+    {#                <li class="list-item">Time</li>#}
+    {#            </ul>#}
+    {#            {% for x in articles %}#}
+    {#                <ul class="article-list">#}
+    {#                    <li class="list-item">{{ x['article'] }}</li>#}
+    {#                    <li class="list-item">{{ x['tag'] }}</li>#}
+    {#                    <li class="list-item">{{ x['time'] }}</li>#}
+    {#                </ul>#}
+    {#            {% endfor %}#}
+    {#        </div>#}
+    {#    </div>#}
+    <div class="list-container">
+        <table class="article-table">
+            <thead>
+            <tr>
+                <th class="article-table-header">Article</th>
+                <th class="article-table-header">Tags</th>
+                <th class="article-table-header">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for x in articles %}
+                <tr class="article-table-row">
+                    <td class="article-table-definition">{{ x['article'] }}</td>
+                    <td class="article-table-definition">{{ x['tag'] }}</td>
+                    <td class="article-table-definition">{{ x['time'] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
-</div>
 {% endblock %}

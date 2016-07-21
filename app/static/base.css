@@ -9,13 +9,14 @@ html, body {
 .article-list {
     width: 100%;
     height: 100%;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    display: table-row;
+    /*margin-left: 20px;*/
+    /*margin-right: 20px;*/
+    /*margin-top: 15px;*/
+    /*margin-bottom: 15px;*/
 }
 
-.article-list:nth-child(evenn) {
+.article-list:nth-child(even) {
     background-color: #EEEEEE;
 }
 
@@ -28,9 +29,40 @@ html, body {
 }
 
 .list-item {
-    color: red;
+    color: #292929;
+    /*padding-left: 20px;*/
+    /*border: 1px solid #000000;*/
+    /*margin-left: 15px;*/
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+    display: table-cell;
+    /*display: table-cell;*/
+    /*margin-bottom: 10px;*/
 }
 
-.list-item:nth-child(odd) {
-    color: darkred;
+.article-table {
+    font-family: 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+.article-table-header {
+    padding-bottom: .5rem;
+}
+
+.article-table-row {
+    padding: 5px;
+}
+
+.article-table-row:nth-child(even) {
+    background-color: #EEEEEE;
+}
+
+.article-table-row:nth-child(odd) {
+    background-color: #d6d6d6;
+}
+
+.article-table-definition {
+    padding: .5rem;
+}
+
+.hovered {
+    background-color: #444444;
 }

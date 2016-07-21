@@ -76,3 +76,4 @@ json.txt
 .secret
 
 bower*
+app/static/jquery/
