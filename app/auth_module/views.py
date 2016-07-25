@@ -61,6 +61,7 @@ def check_session():
 @app.route('/main/archive', methods=['POST'])
 def archive():
     response = request.data
+    print(response)
     return response
 
 
@@ -82,6 +83,7 @@ def get_latest_articles(number):
                  'access_token': session['access_token']}
     articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
     articles_json = json.loads(articles.text)['list']
+    print(articles_json)
     final_list = []
 
     # Gather lists of article components
@@ -96,6 +98,14 @@ def get_latest_articles(number):
         final_list.append(
             dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i], time=time_list[i]))
     return render_template('main.html', articles=final_list)
+
+
+def get_article_ids(articles):
+    ids = []
+    for x in articles:
+        ids.append(articles.keys())
+    print(ids)
+    return ids
 
 
 def get_article_res_title(articles):
@@ -159,5 +169,5 @@ def get_article_time_added(articles):
     for x in articles:
         timediff = timedelta(minutes=int(session['offset']))
         format_time = datetime.utcfromtimestamp(int(articles[x]['time_added'])) - timediff
-        time.append(format_time.strftime('%Y-%m-%d %H:%M:%S'))
+        time.append(format_time.strftime('%x %-I:%-M'))
     return time

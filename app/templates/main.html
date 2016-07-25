@@ -2,27 +2,16 @@
 
 {% block head %}
     {{ super() }}
-    <script type="application/javascript" charset="utf8" src="/app/static/jquery/dist/jquery.min.js"></script>
-    <script type="application/javascript" charset="utf8" src="/app/static/app.js"></script>
+
 {% endblock %}
 
 {% block body %}
-    {#    <div class="list-container">#}
-    {#        <div>#}
-    {#            <ul class="article-list">#}
-    {#                <li class="list-item">Article</li>#}
-    {#                <li class="list-item">Tags</li>#}
-    {#                <li class="list-item">Time</li>#}
-    {#            </ul>#}
-    {#            {% for x in articles %}#}
-    {#                <ul class="article-list">#}
-    {#                    <li class="list-item">{{ x['article'] }}</li>#}
-    {#                    <li class="list-item">{{ x['tag'] }}</li>#}
-    {#                    <li class="list-item">{{ x['time'] }}</li>#}
-    {#                </ul>#}
-    {#            {% endfor %}#}
-    {#        </div>#}
-    {#    </div>#}
+    <div id="button-container">
+{#        <button id="archive">Archive</button>#}
+        <button id="archive">Archive</button>
+        <button id="delete">Delete</button>
+    </div>
+
     <div class="list-container">
         <table class="article-table">
             <thead>
@@ -35,12 +24,18 @@
             <tbody>
             {% for x in articles %}
                 <tr class="article-table-row">
-                    <td class="article-table-definition">{{ x['article'] }}</td>
-                    <td class="article-table-definition">{{ x['tag'] }}</td>
-                    <td class="article-table-definition">{{ x['time'] }}</td>
+                    <td class="article-table-definition article-item">{{ x['article'] }}</td>
+                    <td class="article-table-definition tag-item">{{ x['tag'] }}</td>
+                    <td class="article-table-definition time-item">{{ x['time'] }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
+
+    <script type="application/javascript" charset="utf8"
+            src={{ url_for('static', filename='jquery/dist/jquery.min.js') }}></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>-->
+    <script type="application/javascript" charset="utf8" src={{ url_for('static', filename='app.js') }}></script>
+
 {% endblock %}
