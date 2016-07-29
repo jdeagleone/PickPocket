@@ -83,7 +83,6 @@ def get_latest_articles(number):
                  'access_token': session['access_token']}
     articles = r.post(GET_URL, headers=HEADERS, data=json.dumps(retr_data))
     articles_json = json.loads(articles.text)['list']
-    print(articles_json)
     final_list = []
 
     # Gather lists of article components
@@ -92,19 +91,21 @@ def get_latest_articles(number):
     tag_list = get_article_tags(articles_json)
     image_list = get_article_image(articles_json)
     time_list = get_article_time_added(articles_json)
+    id_list = get_article_ids(articles_json)
 
     # Compile component lists into a list of dictionaries
     for i, x in enumerate(title_list, start=0):
-        final_list.append(
-            dict(article=title_list[i], tag=tag_list[i], fav=fav_list[i], image=image_list[i], time=time_list[i]))
+        final_list.append(dict(article=title_list[i],
+                               tag=tag_list[i],
+                               fav=fav_list[i],
+                               image=image_list[i],
+                               time=time_list[i],
+                               id=id_list[i]))
     return render_template('main.html', articles=final_list)
 
 
 def get_article_ids(articles):
-    ids = []
-    for x in articles:
-        ids.append(articles.keys())
-    print(ids)
+    ids = list(articles.keys())
     return ids
 
 

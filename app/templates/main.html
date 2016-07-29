@@ -23,7 +23,7 @@
             </thead>
             <tbody>
             {% for x in articles %}
-                <tr class="article-table-row">
+                <tr class="article-table-row" data-id={{ x['id'] }}>
                     <td class="article-table-definition article-item">{{ x['article'] }}</td>
                     <td class="article-table-definition tag-item">{{ x['tag'] }}</td>
                     <td class="article-table-definition time-item">{{ x['time'] }}</td>
