@@ -30,16 +30,27 @@ def front():
 
 @app.route('/authenticate/<offset>', methods=['POST', 'GET'])
 def authenticate(offset):
+    # Set the session offset to the given offset value
     session['offset'] = offset
-    # Step 2 of Pocket developer documentation
+    
+    # Step 2 of Pocket developer documentation: make OAuth request
     data = {'consumer_key': CONSUMER_KEY, 'redirect_uri': REDIRECT_URI}
     response = r.post(OAUTH_REQUEST_URL, headers=HEADERS, data=json.dumps(data))
-    json_response = json.loads(response.text)
-    final_auth_url = AUTH_URL + '?request_token=' + json_response[
-        'code'] + '&redirect_uri=' + REDIRECT_URI + '/' + json_response['code']
-    # Step 3 of Pocket developer documentation
-    if response.__str__() == '<Response [200]>':  # nosetest for successful response
+    
+    # Check if the response was successful before continuing
+    if response.status_code == requests.codes.ok:
+        # Convert the response to a JSON object
+        json_response = response.json()
+        
+        # Build the final authorization URL with the request token
+        final_auth_url = AUTH_URL + '?request_token=' + json_response['code'] + '&redirect_uri=' + REDIRECT_URI + '/' + json_response['code']
+        
+        # Step 3 of Pocket developer documentation: redirect user to authorization URL
         return redirect(final_auth_url)
+    else:
+        # Return an error message if the response was not successful
+        return 'Error: Unable to authenticate with Pocket.' 
+    
 
 
 # Step 4 of Pocket developer documentation
@@ -110,17 +121,7 @@ def get_article_ids(articles):
 
 
 def get_article_res_title(articles):
-    title = []
-    for x in articles:
-        if 'resolved_title' in articles[x] and articles[x]['resolved_title'] != '':
-            title.append(articles[x]['resolved_title'])
-        elif 'given_title' in articles[x] and articles[x]['given_title'] != '':
-            title.append(articles[x]['given_title'])
-        elif 'resolved_url' in articles[x] and 'resolved_url' in articles[x]:
-            title.append(articles[x]['resolved_url'])
-        else:
-            title.append('')
-    return title
+    return [articles[x].get('resolved_title', articles[x].get('given_title', articles[x].get('resolved_url', ''))) for x in articles]
 
 
 def get_article_tags(articles):
@@ -129,10 +130,10 @@ def get_article_tags(articles):
         tag_group = ''
         if 'tags' in articles[x]:
             for y in articles[x]['tags']:
-                tag_group = ''.join([tag_group, articles[x]['tags'][y]['tag'], ' '])
-                # TODO: Need to figure out why the hell extra spaces or even commas don't show up
-                # It just keeps showing one space for some reason
-            tag.append(tag_group)
+                tag_group += articles[x]['tags'][y]['tag'] + ' '  # use the += operator to append to the string
+                # adding an extra space after each tag to separate them
+                # consider using strip() method to remove any trailing whitespace
+            tag.append(tag_group.strip())  # append the tag_group after removing any trailing whitespace
         else:
             tag.append('')
     return tag
@@ -167,8 +168,12 @@ def get_article_res_url(articles):
 
 def get_article_time_added(articles):
     time = []
+    # Convert the session offset to a timedelta object
+    timediff = timedelta(minutes=int(session['offset']))
     for x in articles:
-        timediff = timedelta(minutes=int(session['offset']))
-        format_time = datetime.utcfromtimestamp(int(articles[x]['time_added'])) - timediff
-        time.append(format_time.strftime('%x %-I:%-M'))
+        # Convert the time_added to a datetime object and subtract the offset
+        added_time = datetime.utcfromtimestamp(int(articles[x]['time_added'])) - timediff
+        # Use strftime to format the datetime as a string with the desired format
+        formatted_time = added_time.strftime('%x %-I:%-M %p')  # use %p for AM/PM designation
+        time.append(formatted_time)
     return time
